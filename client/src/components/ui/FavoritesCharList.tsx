@@ -3,13 +3,13 @@ import { Col, Row } from 'reactstrap';
 import CharCard from './CharCard';
 import { useAppSelector } from '../../redux/hooks';
 
-export default function CharList(): JSX.Element {
-  const characters = useAppSelector((store) => store.characters.chars);
+export default function FavoriteCharList(): JSX.Element {
+  const characters = useAppSelector((store) => store.characters.favorites);
   return (
     <Row>
       {characters.map((char) => (
         <Col xs="4" key={char.id}>
-          <CharCard key={char.id} char={char} />
+          <CharCard char={char} />
         </Col>
       ))}
     </Row>

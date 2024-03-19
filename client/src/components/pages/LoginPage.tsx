@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Col, Form, Input, Label, Row } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
 import type { LoginForm } from '../../types/auth';
 import { useAppDispatch } from '../../redux/hooks';
 import { loginThunk } from '../../redux/slices/auth/thunks';
@@ -8,7 +7,6 @@ import { openModalWithError } from '../../redux/slices/modal/slice';
 
 export default function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     const formData = Object.fromEntries(
@@ -16,7 +14,6 @@ export default function LoginPage(): JSX.Element {
     ) as LoginForm;
     void dispatch(loginThunk(formData))
       .unwrap()
-      .then(() => navigate('/characters/filters'))
       .catch(() =>
         dispatch(
           openModalWithError(

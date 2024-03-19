@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 type PrivateRouteProps = {
   isAllowed: boolean;
@@ -12,6 +12,14 @@ export default function PrivateRoute({
   isAllowed,
   redirect = '/',
 }: PrivateRouteProps): JSX.Element {
-  if (!isAllowed) return <Navigate to={redirect} />;
+  const { pathname } = useLocation();
+
+  const fnk = (): boolean | string => {
+    if (pathname === '/login') return '/characters/favorites';
+    if (pathname === '/signup') return '/characters';
+
+    return false;
+  };
+  if (!isAllowed) return <Navigate to={fnk() ? fnk() as string : redirect} />;
   return children || <Outlet />;
 }

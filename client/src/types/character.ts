@@ -1,3 +1,5 @@
+import type { SelectOptionType } from '../components/pages/FiltersPage/filterGuard';
+
 export type CharacterType = {
   id: number;
   name: string;
@@ -19,4 +21,6 @@ export type CharacterStateType = {
   selectedChar: CharacterType | null;
   favorites: CharacterType[];
   displayedChars: CharacterType[];
+  loading: boolean;
+  filter: SelectOptionType;
 };

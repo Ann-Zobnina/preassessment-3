@@ -53,7 +53,7 @@ authRouter.post('/login', async (req, res) => {
     if (!valid) return res.status(401).json({ message: 'Incorrect password' });
 
     const plainUser = user.get();
-    delete plainUser.password;
+    delete plainUser.hashpass;
 
     const { accessToken, refreshToken } = generateTokens({ user: plainUser });
 

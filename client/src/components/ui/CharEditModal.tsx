@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   clearSelectedChar,
 } from '../../redux/slices/characters/slice';
+import { editCharThunk } from '../../redux/slices/characters/thunks';
 
 export default function CharEditModal(): JSX.Element {
   const selectedChar = useAppSelector((store) => store.characters.selectedChar);
@@ -27,6 +28,7 @@ export default function CharEditModal(): JSX.Element {
   }, [selectedChar]);
 
   const editHandler = (): void => {
+    void dispatch(editCharThunk({ ...selectedChar!, name: newName}));
     closeModal();
   };
 

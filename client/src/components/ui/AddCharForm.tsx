@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import type { CharacterType } from '../../types/character';
 import CharCard from './CharCard';
+import { useAppDispatch } from '../../redux/hooks';
+import { addCharThunk } from '../../redux/slices/characters/thunks';
+import { openModalWithError, openModalWithSuccess } from '../../redux/slices/modal/slice';
 
 const defaultCardData: Omit<CharacterType, 'id' | 'userId'> = {
   name: 'Крутой бобёр',
@@ -12,16 +15,34 @@ const defaultCardData: Omit<CharacterType, 'id' | 'userId'> = {
 };
 
 export default function AddCharForm(): JSX.Element {
+  const dispatch = useAppDispatch();
   const [cardData, setCardData] =
     useState<Omit<CharacterType, 'id' | 'userId'>>(defaultCardData);
 
   const hangleChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
     setCardData({ ...cardData, [event.target.name]: event.target.value });
 
+  const handlerSubmit = (event: React.ChangeEvent<HTMLFormElement>): void => {
+    event.preventDefault(); 
+    if (
+      cardData.image.startsWith('http://') ||
+      cardData.image.startsWith('https://')
+    ) {
+      void dispatch(addCharThunk(cardData));
+      dispatch(openModalWithSuccess('Новый персонаж успешно добавлен!'));
+    } else {
+       dispatch(
+         openModalWithError(
+           'Некорректный адрес картинки!',
+         ),
+       );
+    }
+  };
+
   return (
     <Row>
       <Col xs="6">
-        <Form>
+        <Form onSubmit={handlerSubmit}>
           <FormGroup>
             <Label for="charName">Имя</Label>
             <Input
@@ -67,7 +88,9 @@ export default function AddCharForm(): JSX.Element {
             />
             <Label>Жив</Label>
           </FormGroup>
-          <Button type="submit">Добавить</Button>
+          <Button type="submit">
+            Добавить
+          </Button>
         </Form>
       </Col>
       <Col xs="6">

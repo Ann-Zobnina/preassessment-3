@@ -3,10 +3,10 @@ import apiAxiosInstance from './apiAxiosInstance';
 import type { CharacterType } from '../../types/character';
 
 class CharacterService {
-  constructor(private client: AxiosInstance) {}
+  constructor(private client: AxiosInstance) { }
 
   async createNewChar(
-    formData: Omit<CharacterType, 'id'>,
+    formData: Omit<CharacterType, 'id' | 'userId'>,
   ): Promise<CharacterType> {
     const res = await this.client.post<CharacterType>('/characters', formData);
     if (res.status !== 201)
